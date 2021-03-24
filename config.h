@@ -6,18 +6,21 @@ static const unsigned int gappx     = 5;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Roboto:size=11" , "JoyPixels:size=11:antialias=true:autohint=true" };
-static const char dmenufont[]       = "Roboto:size=10";
+static const char *fonts[]          = { "Roboto:pixelsize=14" ,
+  "JoyPixels:pixelsize=13",
+  "Symbols Nerd Font:pixelsize=13"
+};
+static const char dmenufont[]       = "Roboto:pixelsize=13";
 //Backround color
-static const char col_gray1[]       = "#4d4dff";
+static const char col_gray1[]       = "#2A2A53";
 //Inactive window border color
 static const char col_gray2[]       = "#444444";
 //Font color
 static const char col_gray3[]       = "#fff";
 //current tag and current window font color
-static const char col_gray4[]       = "#f73636";
+static const char col_gray4[]       = "#1D1F21";
 //Top bar second color and active window border color
-static const char col_cyan[]        = "#2A2A53";
+static const char col_cyan[]        = "#2781CE";
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
@@ -33,7 +36,7 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "爵" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -76,6 +79,9 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+/* commands spawned when clicking statusbar, the mouse button pressed is exporte*/
+static char *statuscmds[] = { "notify-send Mouse$BUTTON" };
+static char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
 
 #include "shiftview.c"
 static Key keys[] = {
@@ -95,7 +101,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ControlMask,		XK_comma,  cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,		        XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
@@ -139,4 +145,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
