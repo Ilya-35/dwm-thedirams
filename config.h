@@ -64,6 +64,8 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
+
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
@@ -115,7 +117,19 @@ static Key keys[] = {
   { MODKEY,                       XK_b,      shiftview,      { .i = -1 } },
 	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
+	{ MODKEY,			                  XK_Down,	 spawn,	         SHCMD("pamixer --allow-boost -d 5; kill -44 $(pidof dwmblocks)") },
+	{ MODKEY|ShiftMask,		          XK_Down,	 spawn,		       SHCMD("pamixer --allow-boost -d 15; kill -44 $(pidof dwmblocks)") },
+	{ MODKEY,			                  XK_Up,	   spawn,		       SHCMD("pamixer --allow-boost -i 5; kill -44 $(pidof dwmblocks)") },
+	{ MODKEY|ShiftMask,		          XK_Up,	   spawn,	         SHCMD("pamixer --allow-boost -i 15; kill -44 $(pidof dwmblocks)") },
+  { MODKEY|ControlMask,           XK_Up,     spawn,          SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)")},
+  /* Launching programms*/
+  { MODKEY|ShiftMask,             XK_b,      spawn,          SHCMD("brave")},
+  { MODKEY|ShiftMask,             XK_t,      spawn,          SHCMD("qbittorrent")},
+  { MODKEY|ShiftMask,             XK_g,      spawn,          SHCMD("gimp")},
+  { MODKEY|ShiftMask,             XK_f,      spawn,          SHCMD("nautilus")},
+  { MODKEY|ShiftMask,             XK_l,      spawn,          SHCMD("slock")},
+  /*End*/
+  { MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -136,7 +150,9 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
+	{ ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
+	{ ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
